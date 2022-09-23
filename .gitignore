@@ -127,3 +127,12 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+
+test.ipynb
+plan.txt
+names.txt
+example_usage.py
+notebooks/
+lazypredict/
+results/
