@@ -1,0 +1,22 @@
+task: classification
+
+# models:
+#   - Linear Regressor
+#   - Lasso Regressor
+#   - Ridge Regressor
+#   - Gaussian Process Regressor
+#   - Support Vector Regressor
+#   - XGB Regressor
+#   - XGBRF Regressor
+
+models:
+  - DecisionTreeClassifier
+  - DummyClassifier
+  - KNeighborsClassifier
+  - MLPClassifier
+  - RandomForestClassifier
+  - RidgeClassifier
+  - RidgeClassifierCV
+  - SGDClassifier
+  - LogisticRegression
+  - SVC
