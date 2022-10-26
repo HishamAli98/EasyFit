@@ -3,3 +3,4 @@ pyyaml==6.0
 xgboost==1.6.1
 pandas==1.4.3
 openpyxl==3.0.10
+tqdm==4.56.0
