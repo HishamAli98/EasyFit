@@ -152,7 +152,7 @@ class EasyModel(ABC):
         models_preds = inputs if from_preds else self.predict(inputs)
         if model_first:
             for model, y_preds in models_preds.items():
-                results[model] = {metric: func(targets, y_preds) 
+                results[model] = {metric: func(targets, y_preds)
                                   for metric, func in self.METRICS.items()}
 
         else:

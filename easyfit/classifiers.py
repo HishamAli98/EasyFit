@@ -1,18 +1,19 @@
+from typing import Dict
+
+from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
 from sklearn.dummy import DummyClassifier
-from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
-from sklearn.linear_model import (LogisticRegression,
-                                  RidgeClassifier, RidgeClassifierCV,
-                                  SGDClassifier, )
-from sklearn.metrics import accuracy_score, precision_score, recall_score, \
-    f1_score, balanced_accuracy_score
+from sklearn.ensemble import AdaBoostClassifier, RandomForestClassifier
+from sklearn.linear_model import (LogisticRegression, RidgeClassifier,
+                                  RidgeClassifierCV, SGDClassifier)
+from sklearn.metrics import (accuracy_score, balanced_accuracy_score, f1_score,
+                             precision_score, recall_score)
+from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.svm import SVC, LinearSVC
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.naive_bayes import GaussianNB
-from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
 
-from ._models import EasyModel, ModelsDict
+from ._models import EasyModel
 
 
 class EasyClassifier(EasyModel):
@@ -41,7 +42,7 @@ class EasyClassifier(EasyModel):
         "F1 Score": f1_score
     }
 
-    def __init__(self, models_dict: ModelsDict = None,
+    def __init__(self, models_dict: Dict = None,
                  include_defaults: bool = True):
         super().__init__(self.DEFAULT_CLASSIFIERS, models_dict,
                          include_defaults=include_defaults)
