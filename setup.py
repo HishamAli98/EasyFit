@@ -8,12 +8,14 @@ setup(
     license='MIT License',
     name='easyfit',
     keywords=['EasyFit', 'easyfit', 'ezfit', 'EZfit'],
-    packages=find_packages('easyfit', 'easyfit.*'),
-    version='0.0.2',
+    # packages=find_packages('easyfit', 'easyfit.*'),
+    packages=['easyfit'],
+    version='0.0.52',
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
+    setup_requires=['wheel'],
     install_requires=["scikit-learn", "pandas", "xgboost", "tqdm"]
 )
