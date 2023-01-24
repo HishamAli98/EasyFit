@@ -73,7 +73,7 @@ class EasyRegressor(_EasyModel):
 
         Returns
         -------
-        preds: Dict 
+        preds: Dict
             Dictionary with same keys in self._models and predictions for each
             model of features in X
 
@@ -92,7 +92,7 @@ class EasyRegressor(_EasyModel):
 
         y : array of targets
 
-        as_df : boolean 
+        as_df : boolean
             - if True: return results in pd.DataFrame
             - if False: return results in dictionary
             (Default value = False)
@@ -117,8 +117,8 @@ class EasyRegressor(_EasyModel):
         X : array of features
 
         y : array of targets
-        
-        as_df : boolean 
+
+        as_df : boolean
             - if True: return results in pd.DataFrame
             - if False: return results in dictionary
             (Default value = False)

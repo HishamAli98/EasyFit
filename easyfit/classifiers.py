@@ -27,7 +27,7 @@ class EasyClassifier(_EasyModel):
     models_dict : Dictionary of additional models
         Can hold:
             - classes: models_dict = {'LinearRegression': LinearRegression}
-            - objects: models_dict = {'LinearRegression': LinearRegression()}                       
+            - objects: models_dict = {'LinearRegression': LinearRegression()}
         (Default value = None)
 
     include_defaults : boolean
@@ -92,7 +92,7 @@ class EasyClassifier(_EasyModel):
 
         Returns
         -------
-        preds: Dict 
+        preds: Dict
             Dictionary with same keys in self._models and predictions for each
             model of features in X
 
@@ -111,7 +111,7 @@ class EasyClassifier(_EasyModel):
 
         y : array of targets
 
-        as_df : boolean 
+        as_df : boolean
             - if True: return results in pd.DataFrame
             - if False: return results in dictionary
             (Default value = False)
@@ -136,8 +136,8 @@ class EasyClassifier(_EasyModel):
         X : array of features
 
         y : array of targets
-        
-        as_df : boolean 
+
+        as_df : boolean
             - if True: return results in pd.DataFrame
             - if False: return results in dictionary
             (Default value = False)
