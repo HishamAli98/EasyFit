@@ -15,8 +15,24 @@ from ._models import _EasyModel
 
 
 class EasyRegressor(_EasyModel):
-    """ """
-    DEFAULT_REGRESSORS = {
+    """
+    Fit regressor models in
+        - _DEFAULT_REGRESSORS (if include_defaults=True)
+        - models_dict (if models_dict != None)
+
+    Parameters
+    ----------
+    models_dict : Dictionary of additional models
+        Can hold:
+            - classes: models_dict = {'LinearRegression': LinearRegression}
+            - objects: models_dict = {'LinearRegression': LinearRegression()}
+        (Default value = None)
+
+    include_defaults : boolean
+        Include _DEFAULT_REGRESSORS in trained models\n
+        (Default value = True)
+    """
+    _DEFAULT_REGRESSORS = {
         'Dummy Regressor': DummyRegressor,
         'Linear Regressor': LinearRegression,
         'Lasso Regressor': Lasso,
@@ -32,7 +48,7 @@ class EasyRegressor(_EasyModel):
         'XGBRF Regressor': XGBRFRegressor,
         'MLP Regressor': MLPRegressor
     }
-    METRICS = {
+    _METRICS = {
         "Mean Absolute Error": mean_absolute_error,
         "Mean Squared Error": mean_squared_error,
         "Root Mean Squared Error": lambda X, y: math.sqrt(mean_squared_error(X, y)),
@@ -41,12 +57,12 @@ class EasyRegressor(_EasyModel):
 
     def __init__(self, models_dict: Dict = None,
                  include_defaults: bool = True):
-        super().__init__(self.DEFAULT_REGRESSORS, models_dict,
+        super().__init__(self._DEFAULT_REGRESSORS, models_dict,
                          include_defaults=include_defaults)
 
     def fit(self, X, y):
         """
-        Fit classifiers in self._models on features X with targets y\n
+        Fit regressors in self._models on features X with targets y\n
         Calls method fit for each model in self._models
 
         Parameters
@@ -109,7 +125,7 @@ class EasyRegressor(_EasyModel):
 
     def evaluate(self, X, y, as_df=False, model_first=True, from_preds=False):
         """
-        Returns models results on each of the metrics in self.METRICS
+        Returns models results on each of the metrics in self._METRICS
         dictionary
 
         Parameters
@@ -136,8 +152,8 @@ class EasyRegressor(_EasyModel):
         results: Dict (as_df=False) or pd.Dataframe (as_df=True)
 
         """
-        return super().evaluate(X, y, as_df=False, model_first=True,
-                                from_preds=False)
+        return super().evaluate(X, y, as_df=as_df, model_first=model_first,
+                                from_preds=from_preds)
 
     def get_model(self, model_key):
         """

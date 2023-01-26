@@ -1,3 +1,4 @@
+from functools import partial
 from typing import Dict
 
 from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
@@ -19,7 +20,7 @@ from ._models import _EasyModel
 class EasyClassifier(_EasyModel):
     """
     Fit classifier models in
-        - DEFAULT_CLASSIFIERS (if include_defaults=True)
+        - _DEFAULT_CLASSIFIERS (if include_defaults=True)
         - models_dict (if models_dict != None)
 
     Parameters
@@ -31,10 +32,10 @@ class EasyClassifier(_EasyModel):
         (Default value = None)
 
     include_defaults : boolean
-        Include DEFAULT_CLASSIFIERS in trained models\n
+        Include _DEFAULT_CLASSIFIERS in trained models\n
         (Default value = True)
     """
-    DEFAULT_CLASSIFIERS = {
+    _DEFAULT_CLASSIFIERS = {
         'Dummy Classifier': DummyClassifier,
         'LogisticRegression': LogisticRegression,
         'RidgeClassifier': RidgeClassifier,
@@ -50,17 +51,17 @@ class EasyClassifier(_EasyModel):
         'Gaussian Naïve Bayes': GaussianNB,
         'Quadratic Discriminant Analysis': QuadraticDiscriminantAnalysis
     }
-    METRICS = {
+    _METRICS = {
         "Accuracy": accuracy_score,
         "Balanced Accuracy": balanced_accuracy_score,
-        "Precision": precision_score,
-        "Recall": recall_score,
-        "F1 Score": f1_score
+        "Precision": partial(precision_score, average='weighted'),
+        "Recall": partial(recall_score, average='weighted'),
+        "F1 Score": partial(f1_score, average='weighted')
     }
 
     def __init__(self, models_dict: Dict = None,
                  include_defaults: bool = True):
-        super().__init__(self.DEFAULT_CLASSIFIERS, models_dict,
+        super().__init__(self._DEFAULT_CLASSIFIERS, models_dict,
                          include_defaults=include_defaults)
 
     def fit(self, X, y):
@@ -128,7 +129,7 @@ class EasyClassifier(_EasyModel):
 
     def evaluate(self, X, y, as_df=False, model_first=True, from_preds=False):
         """
-        Returns models results on each of the metrics in self.METRICS
+        Returns models results on each of the metrics in self._METRICS
         dictionary
 
         Parameters
@@ -155,8 +156,8 @@ class EasyClassifier(_EasyModel):
         results: Dict (as_df=False) or pd.Dataframe (as_df=True)
 
         """
-        return super().evaluate(X, y, as_df=False, model_first=True,
-                                from_preds=False)
+        return super().evaluate(X, y, as_df=as_df, model_first=model_first,
+                                from_preds=from_preds)
 
     def get_model(self, model_key):
         """
