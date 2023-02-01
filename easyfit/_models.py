@@ -14,7 +14,7 @@ class _EasyModel(ABC):
     Use subclasses, i.e. EasyRegressor, EasyClassifier
 
     """
-    METRICS = {}
+    _METRICS = {}
 
     def __new__(cls, *args, **kwargs):
         if cls is _EasyModel:
