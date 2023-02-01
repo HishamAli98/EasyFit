@@ -48,7 +48,7 @@ class EasyClassifier(_EasyModel):
         'MLP Classifier': MLPClassifier,
         'AdaBoost Classifier': AdaBoostClassifier,
         'SGDClassifier': SGDClassifier,
-        'Gaussian Naïve Bayes': GaussianNB,
+        'Gaussian Naive Bayes': GaussianNB,
         'Quadratic Discriminant Analysis': QuadraticDiscriminantAnalysis
     }
     _METRICS = {
@@ -100,7 +100,7 @@ class EasyClassifier(_EasyModel):
         """
         return super().predict(X)
 
-    def score(self, X, y, as_df=False, sorted=True):
+    def score(self, X, y, as_df=True, sort=True):
         """
         Calculate score for each model in self._models\n
         Calls score method for each model in self._models\n
@@ -115,8 +115,8 @@ class EasyClassifier(_EasyModel):
         as_df : boolean
             - if True: return results in pd.DataFrame
             - if False: return results in dictionary
-            (Default value = False)
-        sorted: boolean
+            (Default value = True)
+        sort: boolean
             - if True: returns results sorted in discending order by score
             - if False: returns results in the original order of models
             (Default value = True)
@@ -125,9 +125,9 @@ class EasyClassifier(_EasyModel):
         -------
         results: Dict (as_df=False) or pd.Dataframe (as_df=True)
         """
-        return super().score(X, y, as_df=as_df, sorted=sorted)
+        return super().score(X, y, as_df=as_df, sort=sort)
 
-    def evaluate(self, X, y, as_df=False, model_first=True, from_preds=False):
+    def evaluate(self, X, y, as_df=True, model_first=True, from_preds=False):
         """
         Returns models results on each of the metrics in self._METRICS
         dictionary
@@ -141,7 +141,7 @@ class EasyClassifier(_EasyModel):
         as_df : boolean
             - if True: return results in pd.DataFrame
             - if False: return results in dictionary
-            (Default value = False)
+            (Default value = True)
         model_first : boolean
             - if True: returns models at axis=0 (rows), results at axis=1 (columns)
             - if False: returns models at axis=1 (columns), results at axis=0 (rows)

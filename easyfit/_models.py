@@ -54,7 +54,7 @@ class _EasyModel(ABC):
         return {model_key: model.predict(X)
                 for model_key, model in self._models.items()}
 
-    def score(self, X, y, as_df=False, sorted=True):
+    def score(self, X, y, as_df=True, sort=True):
         result = {model_key: (model.score(X, y)
                   if hasattr(model, 'score') else 'NA')
                   for model_key, model in self._models.items()}
@@ -66,17 +66,17 @@ class _EasyModel(ABC):
             result = pd.DataFrame(result.items(), columns=["Model", "Score"])
         return result
 
-    def evaluate(self, X, y, as_df=False,
+    def evaluate(self, X, y, as_df=True,
                  model_first=True, from_preds=False):
         results = {}
         models_preds = X if from_preds else self.predict(X)
         if model_first:
             for model, y_preds in models_preds.items():
                 results[model] = {metric: func(y, y_preds)
-                                  for metric, func in self.METRICS.items()}
+                                  for metric, func in self._METRICS.items()}
 
         else:
-            for metric, func in self.METRICS.items():
+            for metric, func in self._METRICS.items():
                 results[metric] = {model: func(y, y_preds) for model,
                                    y_preds in models_preds.items()}
 
