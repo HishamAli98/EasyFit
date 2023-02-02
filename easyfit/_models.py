@@ -37,11 +37,9 @@ class _EasyModel(ABC):
                 "must supply models_dict or set include_defaults to True")
         if not isinstance(models_dict, dict):
             raise TypeError("models_dict must be of type dict")
-            
+
         if include_defaults:
             models_dict = {**default_models, **models_dict}
-        else:
-            models_dict = models_dict
 
         for model_key, model in models_dict.items():
             for attr in ("fit", "predict"):
@@ -67,7 +65,7 @@ class _EasyModel(ABC):
         result = {model_key: (model.score(X, y)
                   if hasattr(model, 'score') else 'NA')
                   for model_key, model in self._models.items()}
-        if sorted:
+        if sort:
             result = dict(
                 sorted(result.items(), key=lambda x: x[1], reverse=True)
             )
