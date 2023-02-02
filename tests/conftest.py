@@ -1,32 +1,41 @@
 import pytest
 
 
-@pytest.fixture
-def para():
-    def func():
-        return pytest.mark.parametrize('include_defaults',((True), (False)))
-    return func
+class ModelWithoutPredict:
+    def fit(self):
+        pass
 
-@pytest.fixture
-def model_without_fit():
-    class ModelWithoutFit:
-        def predict(self):
-            pass
-    return ModelWithoutFit()
 
-@pytest.fixture
-def model_without_predict():
-    class ModelWithoutPredict:
-        def fit(self):
-            pass
-    return ModelWithoutPredict()
+class ModelWithoutFit:
+    def predict(self):
+        pass
 
-@pytest.fixture
-def valid_model():
-    class ValidModel:
-        def fit(self):
-            pass
 
-        def predict(self):
-            pass
-    return ValidModel()
+class ValidModel:
+    def fit(self):
+        pass
+    def predict(self):
+        pass
+
+
+@pytest.fixture(params=[
+    ({'model_1': ModelWithoutFit(), 'model_2': ValidModel()}, 'fit'),
+    ({'model_1': ModelWithoutPredict(), 'model_2': ValidModel()}, 'predict'),
+    ({'model_1': ModelWithoutFit, 'model_2': ValidModel}, 'fit'),
+    ({'model_1': ModelWithoutPredict, 'model_2': ValidModel}, 'predict')
+])
+
+
+def invalid_models(request):
+    return request.param
+
+@pytest.fixture(params=[
+    {'model_1': ValidModel(), 'model_2': ValidModel()},
+    {'model_1': ValidModel, 'model_2': ValidModel()},
+    {'model_1': ValidModel(), 'model_2': ValidModel},
+    {'model_1': ValidModel, 'model_2': ValidModel}
+])
+
+
+def valid_models(request):
+    return request.param
