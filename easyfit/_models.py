@@ -39,11 +39,11 @@ class _EasyModel(ABC):
             raise TypeError("models_dict must be of type dict")
             
         if include_defaults:
-            self.models_dict = {**default_models, **models_dict}
+            models_dict = {**default_models, **models_dict}
         else:
-            self.models_dict = models_dict
+            models_dict = models_dict
 
-        for model_key, model in self.models_dict.items():
+        for model_key, model in models_dict.items():
             for attr in ("fit", "predict"):
                 if not hasattr(model, attr):
                     raise InvalidModelError(
@@ -52,7 +52,7 @@ class _EasyModel(ABC):
             model_key: model_class
             if self._is_instantiated(model_class)
             else model_class()
-            for model_key, model_class in self.models_dict.items()
+            for model_key, model_class in models_dict.items()
         }
 
     def fit(self, X, y):
