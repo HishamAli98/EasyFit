@@ -2,6 +2,7 @@ import pytest
 import sklearn
 from packaging import version
 from sklearn.datasets import load_iris
+from sklearn.dummy import DummyClassifier
 
 from easyfit.classifiers import EasyClassifier
 from easyfit.exceptions import InvalidModelError
@@ -14,7 +15,9 @@ else:
 import pandas as pd
 from sklearn.exceptions import ConvergenceWarning
 
-from .decorators import parametrize_include_defaults, parametrize_score_params
+from .decorators import (parametrize_evaluate_params,
+                         parametrize_include_defaults,
+                         parametrize_score_params)
 
 
 class TestConstructor:
@@ -114,3 +117,55 @@ class TestScore:
             if sort:
                 assert list(result.values()) == sorted(result.values(), 
                                                        reverse=True)
+
+
+class TestEvaluate:
+    @parametrize_evaluate_params
+    def test_evaluate(self, as_df, model_first, from_preds):
+        if from_preds:
+            preds = model.predict(X)
+            result = model.evaluate(preds, y, as_df=as_df, 
+                                   model_first=model_first, 
+                                   from_preds=from_preds)
+        else:
+            result = model.evaluate(X, y, as_df=as_df, 
+                                   model_first=model_first, 
+                                   from_preds=from_preds)
+
+        if as_df:
+            assert isinstance(result, pd.DataFrame), (
+                'result type is not pd.Dataframe when as_df=True'
+            )
+            if model_first:
+                assert list(result.columns) == list(model._METRICS.keys()), (
+                    'result.columns != model._METRICS.keys()'
+                )
+            else:
+                assert list(result.columns) == list(model._models.keys()), (
+                    'result.columns != model._models.keys()'
+                )
+        else:
+            assert isinstance(result, dict), (
+                'result type is not dict when as_df=False'
+            )
+            if model_first:
+                assert result.keys() == model._models.keys(), (
+                    'result.keys() != model._METRICS.keys()'
+                )
+            else:
+                assert result.keys() == model._METRICS.keys(), (
+                    'result.keys() != model._models.keys()'
+                )
+            
+class TestGetModel:
+    def test_model_exist(self):
+        dummy = model.get_model('Dummy Classifier')
+        assert isinstance(dummy, DummyClassifier), (
+        "incorrect model returned in get_model"
+        )
+
+    def test_model_does_not_exist(self):
+        dummy = model.get_model('Missing Model')
+        assert dummy is None, (
+        "get model does not return None when model missing"
+        )
