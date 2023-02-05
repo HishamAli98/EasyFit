@@ -4,6 +4,8 @@ from typing import Dict
 import pandas as pd
 import tqdm
 
+from .exceptions import InvalidModelError
+
 
 class _EasyModel(ABC):
     """Base model for EasyRegressor and EasyClassifier
@@ -14,12 +16,13 @@ class _EasyModel(ABC):
     Use subclasses, i.e. EasyRegressor, EasyClassifier
 
     """
-    METRICS = {}
+    _METRICS = {}
 
     def __new__(cls, *args, **kwargs):
         if cls is _EasyModel:
-            raise TypeError(f"Cannot create object of type '{cls.__name__}',"
-                            f"use 'EasyRegressor' or 'EasyClassifier'.")
+            raise NotImplementedError(
+                f"Cannot create object of type '{cls.__name__}',"
+                f"use 'EasyRegressor' or 'EasyClassifier'.")
         return object.__new__(cls)
 
     def __init__(self,
@@ -29,21 +32,25 @@ class _EasyModel(ABC):
                  ):
         if models_dict is None:
             models_dict = {}
-        assert isinstance(
-            models_dict, dict), "models_dict must be of type dict"
-        assert models_dict or include_defaults, \
-            "must supply models_dict or set include_defaults to True"
+        if not (models_dict or include_defaults):
+            raise ValueError(
+                "must supply models_dict or set include_defaults to True")
+        if not isinstance(models_dict, dict):
+            raise TypeError("models_dict must be of type dict")
+
         if include_defaults:
-            self.models_dict = {**default_models, **models_dict}
-        for model_key, model in self.models_dict.items():
+            models_dict = {**default_models, **models_dict}
+
+        for model_key, model in models_dict.items():
             for attr in ("fit", "predict"):
-                assert hasattr(
-                    model, attr), f"model {model_key} must have {attr} method"
+                if not hasattr(model, attr):
+                    raise InvalidModelError(
+                        f"model {model_key} must have {attr} method")
         self._models = {
             model_key: model_class
             if self._is_instantiated(model_class)
             else model_class()
-            for model_key, model_class in self.models_dict.items()
+            for model_key, model_class in models_dict.items()
         }
 
     def fit(self, X, y):
@@ -58,7 +65,7 @@ class _EasyModel(ABC):
         result = {model_key: (model.score(X, y)
                   if hasattr(model, 'score') else 'NA')
                   for model_key, model in self._models.items()}
-        if sorted:
+        if sort:
             result = dict(
                 sorted(result.items(), key=lambda x: x[1], reverse=True)
             )
