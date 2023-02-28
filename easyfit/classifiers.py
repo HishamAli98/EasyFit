@@ -36,20 +36,20 @@ class EasyClassifier(_EasyModel):
         (Default value = True)
     """
     _DEFAULT_CLASSIFIERS = {
-        'Dummy Classifier': DummyClassifier,
+        'DummyClassifier': DummyClassifier,
         'LogisticRegression': LogisticRegression,
         'RidgeClassifier': RidgeClassifier,
-        'RidgeClassifierCV': RidgeClassifierCV,
+        'RidgeClassifier CV': RidgeClassifierCV,
         'LinearSVC': LinearSVC,
-        'Support Vector Classifier': SVC,
-        'Decision Tree Classifier': DecisionTreeClassifier,
+        'SupportVectorClassifier': SVC,
+        'DecisionTree Classifier': DecisionTreeClassifier,
         'RandomForestClassifier': RandomForestClassifier,
         'KNeighborsClassifier': KNeighborsClassifier,
-        'MLP Classifier': MLPClassifier,
-        'AdaBoost Classifier': AdaBoostClassifier,
+        'MLPClassifier': MLPClassifier,
+        'AdaBoostClassifier': AdaBoostClassifier,
         'SGDClassifier': SGDClassifier,
-        'Gaussian Naive Bayes': GaussianNB,
-        'Quadratic Discriminant Analysis': QuadraticDiscriminantAnalysis
+        'GaussianNaive Bayes': GaussianNB,
+        'QuadraticDiscriminantAnalysis': QuadraticDiscriminantAnalysis
     }
     _METRICS = {
         "Accuracy": accuracy_score,
