@@ -1,7 +1,7 @@
 Regressors
 ==========
 
-_DEFAULT_CLASSIFIERS
+_DEFAULT_REGRESSORS
 --------------------
 A private dictionary containing the classes of the default regressors that **EasyFit** provides in *EasyRegressor*.
 

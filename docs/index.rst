@@ -23,11 +23,10 @@ Installation:
    pip install easyfit
 
 .. toctree::
-   :maxdepth: 5
+   :maxdepth: 1
    :caption: Contents:
-
-   files/intro
-   ..  tutorials/tutorials
+   
+   Tutorials <tutorials/tutorials>
 
 
 .. toctree::
