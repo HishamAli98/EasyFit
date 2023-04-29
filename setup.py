@@ -10,7 +10,7 @@ setup(
     keywords=['EasyFit', 'easyfit', 'ezfit', 'EZfit'],
     # packages=find_packages('easyfit', 'easyfit.*'),
     packages=['easyfit'],
-    version='0.0.52',
+    version='0.0.2',
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
